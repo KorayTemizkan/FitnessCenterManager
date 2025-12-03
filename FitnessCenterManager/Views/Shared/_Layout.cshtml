@@ -1,4 +1,4 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,12 +8,50 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/FitnessCenterManager.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            background: #f8f9fa;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .dashboard-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at 10% 20%, rgba(255, 0, 102, 0.30), transparent 45%), radial-gradient(circle at 80% 15%, rgba(0, 123, 255, 0.30), transparent 45%), radial-gradient(circle at 90% 70%, rgba(255, 193, 7, 0.28), transparent 50%), radial-gradient(circle at 20% 80%, rgba(40, 167, 69, 0.30), transparent 50%), radial-gradient(circle at 50% 50%, rgba(111, 66, 193, 0.28), transparent 55%), radial-gradient(circle at 65% 35%, rgba(23, 162, 184, 0.28), transparent 45%);
+            animation: bgMove 8s ease-in-out infinite alternate, hueShift 12s linear infinite;
+            filter: blur(2px);
+        }
+
+        @@keyframes bgMove {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(-60px, -40px) scale(1.05);
+            }
+        }
+
+        @@keyframes hueShift {
+            from {
+                filter: hue-rotate(0deg) blur(2px);
+            }
+
+            to {
+                filter: hue-rotate(50deg) blur(2px);
+            }
+        }
+    </style>
+
 </head>
 <body>
+    <div class="dashboard-bg"></div>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FitnessCenterManager</a>
+                <a class="navbar-brand" asp-controller="Dashboard" asp-action="Index">FitnessCenterManager</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,10 +59,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-controller="Dashboard" asp-action="Index">Ana Sayfa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-controller="Ai" asp-action="Index">AI Öneri</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -38,11 +76,6 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - FitnessCenterManager - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
