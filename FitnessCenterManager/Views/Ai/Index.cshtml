@@ -1,0 +1,164 @@
+@model FitnessCenterManager.Models.ViewModels.AiViewModel
+@{
+    ViewData["Title"] = "Yapay Zeka Kocu";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-robot"></i> Bilgilerini Gir</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Index" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Boy (cm)</label>
+                            <input type="number" asp-for="Height" class="form-control" placeholder="175" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Kilo (kg)</label>
+                            <input type="number" asp-for="Weight" class="form-control" placeholder="70" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Cinsiyet</label>
+                            <select asp-for="Gender" class="form-select">
+                                <option value="Erkek">Erkek</option>
+                                <option value="Kadin">Kadin</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Hedefin Ne?</label>
+                            <textarea asp-for="Goal" class="form-control" rows="3" placeholder="Kas yapmak, kilo vermek, fit kalmak..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="bi bi-camera"></i> Fotografini Yukle (Opsiyonel)
+                            </label>
+                            <input type="file" asp-for="Photo" class="form-control" accept="image/*" />
+                            <small class="text-muted">
+                                Vucut fotografin yuklersen, AI sana daha kisisel oneriler sunabilir. (Max 5MB)
+                            </small>
+                            <span asp-validation-for="Photo" class="text-danger"></span>
+                        </div>
+
+                        <!-- Fotograf Onizleme -->
+                        <div id="imagePreview" class="mb-3 text-center" style="display: none;">
+                            <img id="previewImg" src="#" alt="Onizleme" class="img-thumbnail" style="max-height: 200px;" />
+                            <br />
+                            <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="clearImage()">
+                                <i class="bi bi-x"></i> Fotografi Kaldir
+                            </button>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100" id="submitBtn">
+                            <i class="bi bi-magic"></i>
+                            <span id="btnText">Plan Olustur</span>
+                            <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            @if (!string.IsNullOrEmpty(Model.AiResponse))
+            {
+                <div class="card border-success shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-stars"></i> Senin Icin Hazirlanan Plan</h5>
+                    </div>
+                    <div class="card-body">
+                        @Html.Raw(Model.AiResponse)
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+    <div class="fw-semibold fs-1">
+        <i class="bi bi-info-circle"></i>
+        Formu doldurup gönder düðmesine týkladýðýnda yapay zeka cevabý burada görünecek. Lütfen sayfanýn yüklenmesi için bir süre bekleyiniz.
+    </div>
+</div>
+                
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6><i class="bi bi-lightbulb"></i> Ipuclari</h6>
+                        <ul class="mb-0">
+                            <li>Hedefini ne kadar detayli yazarsan, o kadar kisisel oneriler alirsin.</li>
+                            <li>Fotografini yuklersen, AI vucut tipine gore oneriler sunabilir.</li>
+                            <li>Ornek hedefler: "Karin kaslari yapmak", "5 kg vermek", "Genel fitness"</li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<style>
+    /* AI yanýtý içindeki resimlerin stili */
+    .card-body img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 20px auto;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        border: 2px solid #28a745; /* Baþarý renginde çerçeve */
+    }
+
+    /* Yanýtýn içindeki listelerin daha okunaklý olmasý için */
+    .card-body ul {
+        padding-left: 20px;
+    }
+
+    .card-body li {
+        margin-bottom: 8px;
+    }
+</style>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+
+    <script>
+
+        // Fotograf onizleme
+        document.getElementById('Photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        function clearImage() {
+            document.getElementById('Photo').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('previewImg').src = '#';
+        }
+            document.querySelector('form').addEventListener('submit', function() {
+            // Butonun içindeki metni deðiþtir
+            const btnText = document.getElementById('btnText');
+            if(btnText) btnText.innerText = "AI Plan Hazýrlýyor...";
+
+            // Spinner'ý görünür yap (d-none sýnýfýný kaldýr)
+            const spinner = document.getElementById('spinner');
+            if(spinner) spinner.classList.remove('d-none');
+
+            // Çift týklamayý önlemek için butonu devre dýþý býrak
+            const submitBtn = document.getElementById('submitBtn');
+            if(submitBtn) submitBtn.disabled = true;
+        });
+    </script>
+}

@@ -1,0 +1,59 @@
+@model FitnessCenterManager.Models.Hizmet
+@{
+    ViewData["Title"] = "Hizmet Duzenle";
+}
+
+<h2>Hizmet Duzenle</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label asp-for="UzmanlikAlaniId" class="form-label">Uzmanlik Alani</label>
+                <select asp-for="UzmanlikAlaniId" asp-items="ViewBag.UzmanlikAlanlari" class="form-select">
+                    <option value="">-- Uzmanlik Alani Secin (Opsiyonel) --</option>
+                </select>
+                <small class="text-muted">Bu hizmetin hangi uzmanlik alanina ait oldugunu secin.</small>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Ad" class="form-label">Hizmet Adi</label>
+                <input asp-for="Ad" class="form-control" />
+                <span asp-validation-for="Ad" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Aciklama" class="form-label">Aciklama</label>
+                <textarea asp-for="Aciklama" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Aciklama" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="Ucret" class="form-label">Ucret (TL)</label>
+                        <input asp-for="Ucret" class="form-control" type="number" step="0.01" min="0" />
+                        <span asp-validation-for="Ucret" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Kaydet
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Iptal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

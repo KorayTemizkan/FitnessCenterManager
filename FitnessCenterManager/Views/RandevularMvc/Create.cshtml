@@ -1,0 +1,63 @@
+@model FitnessCenterManager.Models.ViewModels.RandevuCreateViewModel
+@{
+    ViewData["Title"] = "Yeni Randevu";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Randevu Oluþtur</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Hizmet</label>
+                            <select asp-for="Randevu.HizmetId" class="form-select" asp-items="@Model.HizmetlerList">
+                                <option value="">-- Hizmet Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="Randevu.HizmetId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Antrenör</label>
+                            <select asp-for="Randevu.AntrenorId" class="form-select" asp-items="@Model.AntrenorlerList">
+                                <option value="">-- Antrenör Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="Randevu.AntrenorId" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Tarih</label>
+                                <input type="date" asp-for="SecilenTarih"
+                                       class="form-control"
+                                       min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                <span asp-validation-for="SecilenTarih" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Saat Aralýðý</label>
+                                <select asp-for="SecilenSaat" class="form-select" asp-items="@Model.SaatAraliklari">
+                                </select>
+                                <span asp-validation-for="SecilenSaat" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-3">
+                            <button type="submit" class="btn btn-success btn-lg">Randevuyu Tamamla</button>
+                            <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary">Ýptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

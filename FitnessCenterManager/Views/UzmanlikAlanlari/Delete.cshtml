@@ -1,0 +1,66 @@
+@model FitnessCenterManager.Models.UzmanlikAlani
+@{
+    ViewData["Title"] = "Uzmanlik Alani Sil";
+}
+
+<h1>Uzmanlik Alani Sil</h1>
+
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle"></i> Bu kaydi silmek istediginizden emin misiniz?
+</div>
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">Uzmanlik Alani Bilgileri</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Uzmanlik Alani</dt>
+            <dd class="col-sm-9">@Model.Ad</dd>
+
+            <dt class="col-sm-3">Aciklama</dt>
+            <dd class="col-sm-9">@(Model.Aciklama ?? "Belirtilmemis")</dd>
+
+            <dt class="col-sm-3">Bagli Hizmetler</dt>
+            <dd class="col-sm-9">
+                @if (Model.Hizmetler.Any())
+                {
+                    @foreach (var hizmet in Model.Hizmetler)
+                    {
+                        <span class="badge bg-success me-1">@hizmet.Ad</span>
+                    }
+                    <p class="text-warning small mt-2 mb-0">
+                        <i class="bi bi-info-circle"></i> Bu uzmanlik alanini sildiginizde, bagli hizmetler silinmeyecek ancak uzmanlik alani iliskisi kaldirilacaktir.
+                    </p>
+                }
+                else
+                {
+                    <span class="text-muted">Bagli hizmet yok</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Bagli Antrenorler</dt>
+            <dd class="col-sm-9">
+                @if (Model.AntrenorUzmanlikAlanlari.Any())
+                {
+                    <span class="badge bg-primary">@Model.AntrenorUzmanlikAlanlari.Count antrenor</span>
+                    <p class="text-warning small mt-2 mb-0">
+                        <i class="bi bi-info-circle"></i> Bu uzmanlik alanini sildiginizde, antrenorlerin bu uzmanlik alani iliskisi kaldirilacaktir.
+                    </p>
+                }
+                else
+                {
+                    <span class="text-muted">Bagli antrenor yok</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post" class="mt-3">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">
+        <i class="bi bi-trash"></i> Sil
+    </button>
+    <a asp-action="Index" class="btn btn-secondary">Listeye Geri Don</a>
+</form>

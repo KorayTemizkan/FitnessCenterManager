@@ -1,0 +1,34 @@
+@model FitnessCenterManager.Models.SporSalonu
+@{
+    ViewData["Title"] = "Salon Bilgilerini Güncelle";
+}
+
+<h2>Salon Bilgilerini Güncelle</h2>
+
+<form asp-action="Edit" asp-controller="Salon" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Ad" class="form-label"></label>
+        <input asp-for="Ad" class="form-control" />
+        <span asp-validation-for="Ad" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Adres" class="form-label"></label>
+        <input asp-for="Adres" class="form-control" />
+        <span asp-validation-for="Adres" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Telefon" class="form-label"></label>
+        <input asp-for="Telefon" class="form-control" />
+        <span asp-validation-for="Telefon" class="text-danger"></span>
+    </div>
+    <input type="hidden" name="AcilisSaati" value="08:00:00" />
+    <input type="hidden" name="KapanisSaati" value="22:00:00" />
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-secondary">Ýptal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

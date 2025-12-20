@@ -1,0 +1,48 @@
+@model FitnessCenterManager.Models.ViewModels.AntrenorDeleteViewModel
+@{
+    ViewData["Title"] = "Antrenor Sil";
+}
+
+<h1>Antrenor Sil</h1>
+
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle"></i> Bu kaydi silmek istediginizden emin misiniz?
+</div>
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">Antrenor Bilgileri</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Ad</dt>
+            <dd class="col-sm-9">@Model.AntrenorAd</dd>
+            
+            <dt class="col-sm-3">Soyad</dt>
+            <dd class="col-sm-9">@Model.AntrenorSoyad</dd>
+            
+            <dt class="col-sm-3">Uzmanlik Alanlari</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.UzmanlikAlanlariText))
+                {
+                    @foreach (var uzmanlik in Model.UzmanlikAlanlariText.Split(", "))
+                    {
+                        <span class="badge bg-info me-1">@uzmanlik</span>
+                    }
+                }
+                else
+                {
+                    <span class="text-muted">Belirtilmemis</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post" class="mt-3">
+    <input type="hidden" asp-for="AntrenorId" />
+    <button type="submit" class="btn btn-danger">
+        <i class="bi bi-trash"></i> Sil
+    </button>
+    <a asp-action="Index" class="btn btn-secondary">Listeye Geri Don</a>
+</form>

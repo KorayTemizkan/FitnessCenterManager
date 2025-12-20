@@ -1,0 +1,106 @@
+@model FitnessCenterManager.Models.ViewModels.AntrenorEditViewModel
+@{
+    ViewData["Title"] = "Antrenor Duzenle";
+}
+
+<h1>Antrenor Duzenle</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="AntrenorId" />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="AntrenorAd" class="control-label">Ad</label>
+                        <input asp-for="AntrenorAd" class="form-control" />
+                        <span asp-validation-for="AntrenorAd" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="AntrenorSoyad" class="control-label">Soyad</label>
+                        <input asp-for="AntrenorSoyad" class="form-control" />
+                        <span asp-validation-for="AntrenorSoyad" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0"><i class="bi bi-award"></i> Uzmanlik Alanlari</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.Uzmanliklar.Any())
+                    {
+                        <div class="row">
+                            @foreach (var uzmanlik in Model.Uzmanliklar)
+                            {
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="SeciliUzmanliklar"
+                                               value="@uzmanlik.Id"
+                                               id="uzmanlik_@uzmanlik.Id"
+                                               @(Model.SeciliUzmanliklar.Contains(uzmanlik.Id) ? "checked" : "") />
+                                        <label class="form-check-label" for="uzmanlik_@uzmanlik.Id">
+                                            @uzmanlik.Ad
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">Henuz uzmanlik alani tanimlanmamis.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0"><i class="bi bi-list-check"></i> Yapabilecegi Hizmetler</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.Hizmetler.Any())
+                    {
+                        <div class="row">
+                            @foreach (var hizmet in Model.Hizmetler)
+                            {
+                                <div class="col-md-4 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="SeciliHizmetler"
+                                               value="@hizmet.Id"
+                                               id="hizmet_@hizmet.Id"
+                                               @(Model.SeciliHizmetler.Contains(hizmet.Id) ? "checked" : "") />
+                                        <label class="form-check-label" for="hizmet_@hizmet.Id">
+                                            @hizmet.Ad
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">Henuz hizmet tanimlanmamis.</p>
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Listeye Geri Don</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

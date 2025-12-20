@@ -1,0 +1,24 @@
+@model FitnessCenterManager.Models.Hizmet
+@{
+    ViewData["Title"] = "Hizmet Sil";
+}
+
+<h1>Hizmet Sil</h1>
+
+<h3>Bu hizmeti silmek istediðinizden emin misiniz?</h3>
+<div>
+    <h4>Hizmet</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Ad)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Ad)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Aciklama)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Aciklama)</dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Sil" class="btn btn-danger" /> |
+        <a asp-action="Index">Listeye Geri Dön</a>
+    </form>
+</div>
